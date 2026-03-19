@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Детское питание — база знаний</title>
+    <meta
+      name="description"
+      content="Веб-интерфейс для базы знаний по детскому питанию: авторизация, чат с RAG-поиском, источники и обратная связь."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main class="app">
+        <section id="loginView" class="view view--centered">
+          <div class="card login-card">
+            <div class="brand-block">
+              <div class="brand-mark">DP</div>
+              <div>
+                <p class="eyebrow">Интеллектуальный помощник</p>
+                <h1>База знаний по детскому питанию</h1>
+                <p class="subtle-text">
+                  Войдите в систему, чтобы задавать вопросы по документам и получать ответы со ссылками на источники.
+                </p>
+              </div>
+            </div>
+
+            <form id="loginForm" class="form-stack">
+              <label class="field">
+                <span>Логин</span>
+                <input id="loginInput" name="login" type="text" autocomplete="username" placeholder="Введите логин" required />
+              </label>
+
+              <label class="field">
+                <span>Пароль</span>
+                <div class="password-wrap">
+                  <input id="passwordInput" name="password" type="password" autocomplete="current-password" placeholder="Введите пароль" required />
+                  <button id="togglePasswordBtn" class="ghost-btn ghost-btn--small" type="button">Показать</button>
+                </div>
+              </label>
+
+              <button id="loginSubmitBtn" class="primary-btn" type="submit">Войти</button>
+              <p id="loginStatus" class="status-text" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+
+        <section id="appView" class="view hidden">
+          <div class="layout">
+            <aside class="sidebar card">
+              <div class="sidebar__top">
+                <div>
+                  <p class="eyebrow">Рабочая область</p>
+                  <h2>Детское питание</h2>
+                </div>
+                <span id="roleBadge" class="badge">user</span>
+              </div>
+
+              <div class="sidebar__section">
+                <p class="sidebar__label">Пользователь</p>
+                <div id="userInfo" class="user-box"></div>
+              </div>
+
+              <div class="sidebar__section">
+                <p class="sidebar__label">Быстрые действия</p>
+                <div class="actions-list">
+                  <button id="newChatBtn" class="secondary-btn" type="button">Новый диалог</button>
+                  <button id="logoutBtn" class="secondary-btn" type="button">Выйти</button>
+                </div>
+              </div>
+
+              <div id="adminPanel" class="sidebar__section hidden">
+                <p class="sidebar__label">Администрирование</p>
+                <div class="admin-box">
+                  <label class="field">
+                    <span>Папка на Яндекс.Диске</span>
+                    <input id="rootPathInput" type="text" placeholder="Например: app:/Детское питание" />
+                  </label>
+                  <button id="updateBaseBtn" class="primary-btn" type="button">Обновить базу данных</button>
+                  <p id="updateBaseStatus" class="status-text" aria-live="polite"></p>
+                </div>
+              </div>
+            </aside>
+
+            <section class="chat-area">
+              <div class="card chat-header">
+                <div>
+                  <p class="eyebrow">Консультант по документам</p>
+                  <h2>Чат с базой знаний</h2>
+                </div>
+                <div class="header-note">
+                  Ответы формируются только по данным из загруженных документов.
+                </div>
+              </div>
+
+              <div id="chatMessages" class="card chat-messages" aria-live="polite"></div>
+
+              <form id="askForm" class="card ask-form">
+                <label class="field field--grow">
+                  <span>Ваш вопрос</span>
+                  <textarea
+                    id="questionInput"
+                    rows="4"
+                    placeholder="Например: какие требования предъявляются к хранению готовых блюд?"
+                    required
+                  ></textarea>
+                </label>
+                <div class="ask-actions">
+                  <div id="askStatus" class="status-text"></div>
+                  <button id="askSubmitBtn" class="primary-btn" type="submit">Отправить вопрос</button>
+                </div>
+              </form>
+            </section>
+
+            <aside class="card feedback-panel">
+              <div>
+                <p class="eyebrow">Обратная связь</p>
+                <h2>Оценка ответа</h2>
+                <p class="subtle-text">
+                  После получения ответа вы сможете отправить отзыв, чтобы улучшать качество базы знаний.
+                </p>
+              </div>
+
+              <form id="feedbackForm" class="form-stack">
+                <div class="rating-group">
+                  <span>Оценка</span>
+                  <div class="rating-row">
+                    <label><input type="radio" name="vote" value="1" /> 1</label>
+                    <label><input type="radio" name="vote" value="2" /> 2</label>
+                    <label><input type="radio" name="vote" value="3" /> 3</label>
+                    <label><input type="radio" name="vote" value="4" /> 4</label>
+                    <label><input type="radio" name="vote" value="5" /> 5</label>
+                  </div>
+                </div>
+
+                <label class="field">
+                  <span>Комментарий</span>
+                  <textarea id="feedbackComment" rows="5" placeholder="Напишите, что было полезно или чего не хватило"></textarea>
+                </label>
+
+                <button id="feedbackSubmitBtn" class="secondary-btn" type="submit">Отправить отзыв</button>
+                <p id="feedbackStatus" class="status-text" aria-live="polite"></p>
+              </form>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      window.APP_CONFIG = {
+        LOGIN_WEBHOOK: "https://n8n.nppsatek.ru/webhook/det/login",
+        ASK_WEBHOOK: "https://n8n.nppsatek.ru/webhook/det/ask",
+        FEEDBACK_WEBHOOK: "https://n8n.nppsatek.ru/webhook/det/feedback",
+        UPDATE_BASE_WEBHOOK: "https://n8n.nppsatek.ru/webhook/det/update_base",
+        DEFAULT_ROOT_PATH: "app:/Детское питание",
+        APP_TITLE: "База знаний по детскому питанию"
+      };
+    </script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
